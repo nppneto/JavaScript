@@ -16,8 +16,23 @@ class NegociacaoController {
 
         // console.log(typeof(this._inputData.value));
 
-        let data = new Date(this._inputData.value.split('-')); //LIVRO PÁGINA 102
-        console.log(data);
+         //LIVRO PÁGINA 102
+
+        // let converter = new DateConverter();
+
+        let data = DateConverter.paraData(this._inputData.value);
+
+        let negociacao = new Negociacao(
+            data,
+            parseInt(this._inputQuantidade.value),
+            parseFloat(this._inputValor.value)
+        );
+
+        let diaMesAno = DateConverter.paraTexto(negociacao.data);
+
+        console.log(negociacao.data);
+
+        console.log(diaMesAno);
 
         // Tirando este trecho deste bloco e colocando-o no construtor,
         // O programa só precisará buscar uma vez as tags no DOM
