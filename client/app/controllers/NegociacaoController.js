@@ -2,18 +2,29 @@ class NegociacaoController {
 
 
     constructor() {
+
         const $ = document.querySelector.bind(document);
 
         this._inputQuantidade = $('#quantidade');
         this._inputData = $('#data');
         this._inputValor = $('#valor');
-        this._negociacoes = new Negociacoes();
+
+        // const self = this;
+
+        // Resolvemos a questão do contexto com a Arrow Function
+        // Pois o escopo do seu this é léxico, e não dinâmico
+        this._negociacoes = new Negociacoes(model => {
+            // console.log(this);
+            // self._negociacoesView.update(model);
+            this._negociacoesView.update(model);
+        });
+
         this._negociacoesView = new NegociacoesView('#negociacoes');
 
         // Recebe inicialmente o modelo que encapsula uma lista vazia
         this._negociacoesView.update(this._negociacoes);
-        this._mensagem = new Mensagem();
 
+        this._mensagem = new Mensagem();
         // Instância da View de mensagens
         this._mensagemView = new MensagemView('#mensagemView');
         this._mensagemView.update(this._mensagem);
@@ -24,9 +35,8 @@ class NegociacaoController {
         // Cancela a submissão do formulário
         event.preventDefault();
         this._negociacoes.adiciona(this._criaNegociacao());
-        this._mensagem.texto = "Negociação adicionada com sucesso!";
-        this._negociacoesView.update(this._negociacoes);
 
+        this._mensagem.texto = "Negociação adicionada com sucesso!";
         this._mensagemView.update(this._mensagem);
         this._limpaFormulario();
 
@@ -50,7 +60,6 @@ class NegociacaoController {
 
     apaga() {
         this._negociacoes.esvazia();
-        this._negociacoesView.update(this._negociacoes);
         this._mensagem.texto = 'Negociações apagadas com sucesso!';
         this._mensagemView.update(this._mensagem);
     }
