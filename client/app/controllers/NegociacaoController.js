@@ -9,25 +9,29 @@ class NegociacaoController {
         this._inputData = $('#data');
         this._inputValor = $('#valor');
 
-        // Criação do Proxy
-        this._negociacoes = ProxyFactory.create(
+        // Através de Bind , passamos a instância do modelo, a instância
+        // da View e as propriedades ou métodos que desejamos ativar a
+        // atualização automática.
+        this._negociacoes = new Bind(
             new Negociacoes(),
-            ['adiciona', 'esvazia'],
-            model => this._negociacoesView.update(model)
+            new NegociacoesView('#negociacoes'),
+            ['adiciona', 'esvazia']
         );
 
         this._negociacoesView = new NegociacoesView('#negociacoes');
 
         // Recebe inicialmente o modelo que encapsula uma lista vazia
+        // Chamando o Update
         this._negociacoesView.update(this._negociacoes);
 
-        this._mensagem = ProxyFactory.create(
+        this._mensagem = new Bind(
             new Mensagem(),
-            ['texto'],
-            model => this._mensagemView.update(model)
+            new MensagemView('#mensagemView'),
+            ['texto']
         );
         // Instância da View de mensagens
         this._mensagemView = new MensagemView('#mensagemView');
+        // Chamando o Update
         this._mensagemView.update(this._mensagem);
     }
 
