@@ -15,7 +15,9 @@ class NegociacaoController {
         this._negociacoes = new Bind(
             new Negociacoes(),
             new NegociacoesView('#negociacoes'),
-            ['adiciona', 'esvazia']
+            // Não passamos mais os parâmetros de armadilha
+            // Dentro de um array
+            'adiciona', 'esvazia'
         );
 
         this._negociacoesView = new NegociacoesView('#negociacoes');
@@ -27,7 +29,9 @@ class NegociacaoController {
         this._mensagem = new Bind(
             new Mensagem(),
             new MensagemView('#mensagemView'),
-            ['texto']
+            // Não passamos mais os parâmetros de armadilha
+            // Dentro de um array
+            'texto'
         );
         // Instância da View de mensagens
         this._mensagemView = new MensagemView('#mensagemView');
