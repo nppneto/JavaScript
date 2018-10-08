@@ -2,71 +2,57 @@ class NegociacaoController {
 
 
     constructor() {
-        let $ = document.querySelector.bind(document);
+        const $ = document.querySelector.bind(document);
 
         this._inputQuantidade = $('#quantidade');
         this._inputData = $('#data');
         this._inputValor = $('#valor');
+        this._negociacoes = new Negociacoes();
+        this._negociacoesView = new NegociacoesView('#negociacoes');
+
+        // Recebe inicialmente o modelo que encapsula uma lista vazia
+        this._negociacoesView.update(this._negociacoes);
+        this._mensagem = new Mensagem();
+
+        // Instância da View de mensagens
+        this._mensagemView = new MensagemView('#mensagemView');
+        this._mensagemView.update(this._mensagem);
     }
 
     adiciona(event) {
 
         // Cancela a submissão do formulário
         event.preventDefault();
+        this._negociacoes.adiciona(this._criaNegociacao());
+        this._mensagem.texto = "Negociação adicionada com sucesso!";
+        this._negociacoesView.update(this._negociacoes);
 
-        // console.log(typeof(this._inputData.value));
+        this._mensagemView.update(this._mensagem);
+        this._limpaFormulario();
 
-         //LIVRO PÁGINA 102
+    }
 
-        // let converter = new DateConverter();
+    _limpaFormulario() {
 
-        let data = DateConverter.paraData(this._inputData.value);
+        this._inputData.value = '';
+        this._inputQuantidade.value = 1;
+        this._inputValor.value = 0.0;
+        this._inputData.focus();
+    }
 
-        let negociacao = new Negociacao(
-            data,
+    _criaNegociacao() {
+        return new Negociacao (
+            DateConverter.paraData(this._inputData.value),
             parseInt(this._inputQuantidade.value),
             parseFloat(this._inputValor.value)
         );
+    }
 
-        let diaMesAno = DateConverter.paraTexto(negociacao.data);
-
-        console.log(negociacao.data);
-
-        console.log(diaMesAno);
-
-        // Tirando este trecho deste bloco e colocando-o no construtor,
-        // O programa só precisará buscar uma vez as tags no DOM
-        //-----------------------------------------------------
-        // Realizando o bind(), querySelector mantém document como seu contexto this
-        // let negociacao = new Negociacao(
-        //     this._inputData.value,
-        //     parseInt(this._inputQuantidade.value),
-        //     parseFloat(this._inputValor.value)
-        // );
-        
-        // console.log(negociacao);
-
-        // 2016-11-12
-        // let data = new Date(...
-        //     this._inputData.value
-        //         .split('-')
-        //         .map((item, indice) => {
-        //             return item - indice % 2;
-        //         })
-        //     );
-
-        // console.log(data);
-
-        // let negociacao = new Negociacao(
-        //     this._inputQuantidade.value,
-        //     this._inputData.value,
-        //     this._inputValor.value
-        // );
-
-        // console.log(negociacao);
-
-        // Adicionar a negociação em uma lista
-
+    apaga() {
+        this._negociacoes.esvazia();
+        this._negociacoesView.update(this._negociacoes);
+        this._mensagem.texto = 'Negociações apagadas com sucesso!';
+        this._mensagemView.update(this._mensagem);
     }
 
 }
