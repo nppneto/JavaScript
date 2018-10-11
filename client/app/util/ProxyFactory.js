@@ -4,6 +4,7 @@ class ProxyFactory {
     return new Proxy(objeto, {
       get(target, prop, receiver) {
         // Usa o array props para realizar o includes
+        // Utilizando o método estático _ehFuncao
         if (ProxyFactory._ehFuncao(target[prop]) && props.includes(prop)) {
           return function() {
             console.log(`"${prop}" disparou uma armadilha!`);
@@ -20,7 +21,7 @@ class ProxyFactory {
       set(target, prop, value, receiver) {
         const updated = Reflect.set(target, prop, value);
 
-        // Só
+        // Se fizer parte da lista, executamos a armadilha
         if (props.includes(prop)) armadilha(target);
 
         return updated;
@@ -28,6 +29,7 @@ class ProxyFactory {
     });
   }
 
+  // Novo método estático
   static _ehFuncao(fn) {
     return typeof fn == typeof Function;
   }
