@@ -61,38 +61,48 @@ class NegociacaoController {
     }
   }
 
-  importaNegociacoes() {
-    // criação do array negociações
-    const negociacoes = [];
+  // importaNegociacoes() {
+  //   // criação do array negociações
+  //   const negociacoes = [];
 
-    // retorna uma promise com as negociações da semana atual
-    this._service
-      .obterNegociacoesDaSemana()
-      // através do then, temos acesso aos dados de retorno de uma promise
-      .then(semana => {
-        // usando o spread operator,
-        // que desmembrará cada elemento do array anterior,
-        // passando-os como parâmetro para a função push()
-        negociacoes.push(...semana);
-        // retorna uma promise com as negociações da semana anterior
-        return this._service.obterNegociacoesDaSemanaAnterior();
+  //   // retorna uma promise com as negociações da semana atual
+  //   this._service
+  //     .obterNegociacoesDaSemana()
+  //     // através do then, temos acesso aos dados de retorno de uma promise
+  //     .then(semana => {
+  //       // usando o spread operator,
+  //       // que desmembrará cada elemento do array anterior,
+  //       // passando-os como parâmetro para a função push()
+  //       negociacoes.push(...semana);
+  //       // retorna uma promise com as negociações da semana anterior
+  //       return this._service.obterNegociacoesDaSemanaAnterior();
+  //     })
+  //     .then(anterior => {
+  //       // adicionando também os dados da semana anterior juntos ao da semana atual (mesmo array)
+  //       negociacoes.push(...anterior);
+  //       return this._service.obterNegociacoesDaSemanaRetrasada();
+  //     })
+  //     .then(retrasada => {
+  //       negociacoes.push(...retrasada);
+  //       // para cada negociação no array, adicionamos a negociação na lista
+  //       negociacoes.forEach(negociacao =>
+  //         this._negociacoes.adiciona(negociacao)
+  //       );
+  //       // exibe mensagem de sucesso!
+  //       this._mensagem.texto = "Negociações importadas com sucesso!";
+  //     })
+  //     // caso não haja sucesso, exibe mensagem com o erro
+  //     .catch(err => (this._mensagem.texto = err));
+  // }
+
+  importaNegociacoes() {
+
+    this._service.obterNegociacoesDoPeriodo()
+      .then(negociacoes => {
+        negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao));
+        this._mensagem.texto = "Negociações do período importadas com sucesso!";
       })
-      .then(anterior => {
-        // adicionando também os dados da semana anterior juntos ao da semana atual (mesmo array)
-        negociacoes.push(...anterior);
-        return this._service.obterNegociacoesDaSemanaRetrasada();
-      })
-      .then(retrasada => {
-        negociacoes.push(...retrasada);
-        // para cada negociação no array, adicionamos a negociação na lista
-        negociacoes.forEach(negociacao =>
-          this._negociacoes.adiciona(negociacao)
-        );
-        // exibe mensagem de sucesso!
-        this._mensagem.texto = "Negociações importadas com sucesso!";
-      })
-      // caso não haja sucesso, exibe mensagem com o erro
-      .catch(err => (this._mensagem.texto = err));
+      .catch(err => this._mensagem.texto = err);
   }
 
   _limpaFormulario() {

@@ -24,7 +24,6 @@ class NegociacaoService {
   }
 
   obterNegociacoesDaSemanaAnterior() {
-
     return this._http.get("negociacoes/anterior").then(
       dados => {
         const negociacoes = dados.map(
@@ -39,10 +38,11 @@ class NegociacaoService {
         return negociacoes;
       },
       err => {
-        throw new Error("Não foi possível obter as negociações da semana anterior");
+        throw new Error(
+          "Não foi possível obter as negociações da semana anterior"
+        );
       }
     );
-
   }
 
   obterNegociacoesDaSemanaRetrasada() {
@@ -60,9 +60,27 @@ class NegociacaoService {
         return negociacoes;
       },
       err => {
-        throw new Error("Não foi possível obter as negociações da semana retrasada");
+        throw new Error(
+          "Não foi possível obter as negociações da semana retrasada"
+        );
       }
     );
   }
 
+  obterNegociacoesDoPeriodo() {
+    return Promise.all([
+      this.obterNegociacoesDaSemana(),
+      this.obterNegociacoesDaSemanaAnterior(),
+      this.obterNegociacoesDaSemanaRetrasada()
+    ])
+      .then(periodo => {
+        // periodo ainda é um array com 3 elementos que são arrays
+
+        return periodo.reduce((novoArray, item) => novoArray.concat(item), []);
+      })
+      .catch(err => {
+        console.log(err);
+        throw new Error("Não foi possível obter as negociações do período.");
+      });
+  }
 }
