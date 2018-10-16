@@ -40,6 +40,6 @@ class Negociacao {
     // Sendo assim, podemos usar o operador == para comparação.
     // Esta solução só funciona ser houver a comparação de todas
     // As propriedades do objeto
-    return JSON.stringify(this) = JSON.stringify(negociacao);
+    return JSON.stringify(this) == JSON.stringify(negociacao);
   }
 }
