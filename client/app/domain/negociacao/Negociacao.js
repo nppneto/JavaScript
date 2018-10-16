@@ -24,4 +24,22 @@ class Negociacao {
   get valor() {
     return this._valor;
   }
+
+  // equals(negociacao) {
+  //   return (
+  //     this.data.getDate() == negociacao.data.getDate() &&
+  //     this.data.getMonth() == negociacao.data.getMonth() &&
+  //     this.data.getFullYear() == negociacao.data.getFullYear() &&
+  //     this.quantidade == negociacao.quantidade &&
+  //     this.valor == negociacao.valor
+  //   );
+  // }
+
+  equals(negociacao) {
+    // JSON.stringify converte um objeto em string.
+    // Sendo assim, podemos usar o operador == para comparação.
+    // Esta solução só funciona ser houver a comparação de todas
+    // As propriedades do objeto
+    return JSON.stringify(this) = JSON.stringify(negociacao);
+  }
 }
