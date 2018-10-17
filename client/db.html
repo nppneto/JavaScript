@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Aprendendo IndexedDB</title>
+    </head>
+
+    <body>
+        <script>
+
+            // let para aceitar uma nova atribuição
+            let connection = null;
+
+            const openRequest = indexedDB.open("jscangaceiro", 2);
+
+            // Será chamada só quando não existir o banco
+            // Ou estivermos atualizando um banco existente
+            openRequest.onupgradeneeded = e => {
+                
+                console.log("Cria ou altera um banco existente!");
+
+                // obtendo conexão
+                connection = e.target.result;
+
+                // verifica se a tabela existe...
+                // caso exista, deleta a tabela
+                if(connection.objectStoreNames.contains("negociacoes")) {
+                    connection.deleteObjectStore("negociacoes");
+                }
+
+                // após a verificação, cria a tabela
+                connection.createObjectStore("negociacoes", { autoIncrement: true });
+            };
+
+            // Será chamada quando a conexão for obtida
+            openRequest.onsuccess = e => {
+
+                console.log("Conexão obtida com sucesso!");
+
+                // a variável guarda uma referência para a conexão
+                connection = e.target.result;
+            };
+
+            // Será chamada caso ocorra algum erro na abertura de conexão
+            openRequest.onerror = e => {
+
+                console.log(e.target.error);
+
+            };
+
+        </script>
+    </body>
+</html>
