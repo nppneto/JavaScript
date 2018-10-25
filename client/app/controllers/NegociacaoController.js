@@ -37,6 +37,14 @@ class NegociacaoController {
     this._mensagemView.update(this._mensagem);
 
     this._service = new NegociacaoService();
+
+    DAOFactory
+      .getNegociacaoDAO()
+      .then(dao => dao.listaTodos())
+      .then(negociacoes =>
+          negociacoes.forEach(negociacao => 
+              this._negociacoes.adiciona(negociacao)))
+      .catch(err => this._mensagem.texto = err);
   }
 
   adiciona(event) {
