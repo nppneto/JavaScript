@@ -43,10 +43,16 @@ class NegociacaoController {
     try {
       // Cancela a submissão do formulário
       event.preventDefault();
-      this._negociacoes.adiciona(this._criaNegociacao());
-      this._mensagem.texto = "Negociação adicionada com sucesso!";
-      this._limpaFormulario();
-      // this._limpaForm();
+      const negociacao = this._criaNegociacao();
+
+      DAOFactory.getNegociacaoDAO()
+        .then(dao => dao.adiciona(negociacao))
+        .then(() => {
+          this._negociacoes.adiciona(negociacao);
+          this._mensagem.texto = "Negociação adicionada com sucesso!";
+          this._limpaFormulario();
+        })
+        .catch(err => (this._mensagem.texto = err));
     } catch (err) {
       console.log(err);
       console.log(err.stack);
