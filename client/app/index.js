@@ -1,37 +1,43 @@
-//lista de todos os campos que eu tenho na minha página
+System.register([], function (_export, _context) {
+  "use strict";
 
-//manipulando DOM
-var campos = [
-  document.querySelector("#data"),
-  document.querySelector("#quantidade"),
-  document.querySelector("#valor")
-];
+  var campos, tbody;
+  return {
+    setters: [],
+    execute: function () {
+      campos = [document.querySelector("#data"), document.querySelector("#quantidade"), document.querySelector("#valor")];
 
-console.log(campos);
 
-var tbody = document.querySelector("table tbody");
+      console.log(campos);
 
-document.querySelector(".form").addEventListener("submit", function(event) {
-  event.preventDefault();
+      tbody = document.querySelector("table tbody");
 
-  var tr = document.createElement("tr");
 
-  campos.forEach(function(campo) {
-    var td = document.createElement("td");
-    td.textContent = campo.value;
-    tr.appendChild(td);
-  });
+      document.querySelector(".form").addEventListener("submit", function (event) {
+        event.preventDefault();
 
-  var tdVolume = document.createElement("td");
-  tdVolume.textContent = campos[1].value * campos[2].value;
+        var tr = document.createElement("tr");
 
-  tr.appendChild(tdVolume);
+        campos.forEach(function (campo) {
+          var td = document.createElement("td");
+          td.textContent = campo.value;
+          tr.appendChild(td);
+        });
 
-  tbody.appendChild(tr);
+        var tdVolume = document.createElement("td");
+        tdVolume.textContent = campos[1].value * campos[2].value;
 
-  campos[0].value = "";
-  campos[1].value = 1;
-  campos[2].value = 0;
+        tr.appendChild(tdVolume);
 
-  campos[0].focus();
+        tbody.appendChild(tr);
+
+        campos[0].value = "";
+        campos[1].value = 1;
+        campos[2].value = 0;
+
+        campos[0].focus();
+      });
+    }
+  };
 });
+//# sourceMappingURL=index.js.map
