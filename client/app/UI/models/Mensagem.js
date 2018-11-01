@@ -1,4 +1,4 @@
-class Mensagem {
+export class Mensagem {
   // Se texto não for passado como parâmetro,
   // Por padrão, atruibuirá a string em branco
   constructor(texto = "") {

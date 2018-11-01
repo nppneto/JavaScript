@@ -1,4 +1,4 @@
-class Negociacoes {
+export class Negociacoes {
   constructor(armadilha) {
     this._negociacoes = [];
     // this._armadilha = armadilha;

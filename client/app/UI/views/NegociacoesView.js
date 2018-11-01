@@ -1,3 +1,6 @@
+import { View } from './View.js';
+import { DateConverter } from '../converters/DateConverter.js';
+
 // Herdando da classe View
 class NegociacoesView extends View {
 

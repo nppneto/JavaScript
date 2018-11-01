@@ -1,4 +1,4 @@
-class ProxyFactory {
+export class ProxyFactory {
   static create(objeto, props, armadilha) {
     // Recebe o objeto como parâmetro
     return new Proxy(objeto, {

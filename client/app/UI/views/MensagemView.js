@@ -1,5 +1,7 @@
+import { View } from './View.js';
+
 // Herdando da classe View
-class MensagemView extends View {
+export class MensagemView extends View {
 
     template(model) {
         // Se model for diferente de 0, undefined ou nulo,

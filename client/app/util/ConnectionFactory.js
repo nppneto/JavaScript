@@ -6,7 +6,7 @@ const ConnectionFactory = (() => {
 
     let close = null;
 
-    return class ConnectionFactory {
+    export class ConnectionFactory {
 
         constructor() {
 

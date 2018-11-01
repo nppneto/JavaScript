@@ -1,5 +1,6 @@
-const controller = new NegociacaoController();
+import { NegociacaoController } from './controllers/NegociacaoController.js';
 
+const controller = new NegociacaoController();
 const $ = document.querySelector.bind(document);
 
 // Associa o evento de submissão do formulário à chamada do método "adiciona"
