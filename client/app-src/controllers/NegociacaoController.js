@@ -1,13 +1,6 @@
-import { Negociacoes } from '../domain/negociacao/Negociacoes.js';
-import { NegociacoesView } from '../UI/views/NegociacoesView.js';
-import { Mensagem } from '../UI/models/Mensagem.js';
-import { MensagemView } from '../UI/views/MensagemView.js';
-import { NegociacaoService } from '../domain/negociacao/NegociacaoService.js';
-import { getNegociacaoDAO } from '../util/DAOFactory.js';
-import { DataInvalidaException } from '../UI/converters/DataInvalidaException.js';
-import { Negociacao } from '../domain/negociacao/Negociacao.js';
-import { Bind } from '../util/Bind.js';
-import { DateConverter } from '../ui/converters/DateConverter.js';
+import { Negociacoes, NegociacaoService, Negociacao } from '../domain/index.js';
+import { NegociacoesView, MensagemView, Mensagem, DataInvalidaException, DateConverter } from '../UI/index.js';
+import { getNegociacaoDAO, Bind } from '../util/index.js';
 
 // exporta a classe NegociacaoController para quem precisar importar
 export class NegociacaoController {
