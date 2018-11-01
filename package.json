@@ -6,6 +6,7 @@
   "author": "Nelson Neto <nelsonp2n@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "bootstrap": "^4.1.3"
+    "bootstrap": "^4.1.3",
+    "systemjs": "^0.20.12"
   }
 }

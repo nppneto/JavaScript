@@ -50,7 +50,10 @@
     <div id="negociacoes"></div>
 
 </body>
-<script src="app/domain/negociacao/Negociacao.js"></script>
+
+<!-- biblioteca do system.js -->
+<script src="node_modules/systemjs/dist/system.js"></script>
+<!-- <script src="app/domain/negociacao/Negociacao.js"></script>
 <script src="app/controllers/NegociacaoController.js"></script>
 <script src="app/UI/converters/DateConverter.js"></script>
 <script src="app/domain/negociacao/Negociacoes.js"></script>
@@ -68,7 +71,13 @@
 <script src="app/domain/negociacao/NegociacaoDAO.js"></script>
 
 <script src="app/util/DAOFactory.js"></script>
-<script src="app/app.js"></script>
+<script src="app/app.js"></script> -->
+
+<script>
+    System
+        .import('app/app.js')
+        .catch(err => console.error(err));
+</script>
 
 
 </html>
