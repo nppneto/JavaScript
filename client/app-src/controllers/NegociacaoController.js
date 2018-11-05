@@ -1,6 +1,12 @@
-import { Negociacoes, NegociacaoService, Negociacao } from '../domain/index.js';
-import { NegociacoesView, MensagemView, Mensagem, DataInvalidaException, DateConverter } from '../UI/index.js';
-import { getNegociacaoDAO, Bind } from '../util/index.js';
+import { Negociacoes, NegociacaoService, Negociacao } from "../domain/index.js";
+import {
+  NegociacoesView,
+  MensagemView,
+  Mensagem,
+  DataInvalidaException,
+  DateConverter
+} from "../UI/index.js";
+import { getNegociacaoDAO, Bind } from "../util/index.js";
 
 // exporta a classe NegociacaoController para quem precisar importar
 export class NegociacaoController {
@@ -46,96 +52,54 @@ export class NegociacaoController {
     this._init();
   }
 
-  _init() {
+  async _init() {
+    try {
+      const dao = await getNegociacaoDAO();
+      const negociacoes = await dao.listaTodos();
+      negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao));
+    } catch (err) {
+      // err.message extrai apenas a mensagem de erro da exceção
 
-    getNegociacaoDAO()
-    .then(dao => dao.listaTodos())
-    .then(negociacoes =>
-        negociacoes.forEach(negociacao => 
-            this._negociacoes.adiciona(negociacao)))
-    .catch(err => this._mensagem.texto = err);
+      this._mensagem.texto = err.message;
+    }
+    // getNegociacaoDAO()
+    // .then(dao => dao.listaTodos())
+    // .then(negociacoes =>
+    //     negociacoes.forEach(negociacao =>
+    //         this._negociacoes.adiciona(negociacao)))
+    // .catch(err => this._mensagem.texto = err);
   }
 
-  adiciona(event) {
+  async adiciona(event) {
     // Cancela a submissão do formulário
-    event.preventDefault();
 
     try {
+      event.preventDefault();
       const negociacao = this._criaNegociacao();
 
-       getNegociacaoDAO()
-        .then(dao => dao.adiciona(negociacao))
-        .then(() => {
-          this._negociacoes.adiciona(negociacao);
-          this._mensagem.texto = "Negociação adicionada com sucesso!";
-          this._limpaFormulario();
-        })
-        .catch(err => (this._mensagem.texto = err));
-    } catch (err) {
-      console.log(err);
-      console.log(err.stack);
+      const dao = await getNegociacaoDAO();
+      await dao.adiciona(negociacao);
+      this._negociacoes.adiciona(negociacao);
+      this._mensagem.texto = "Negociação adicionada com sucesso!";
 
-      if (err instanceof DataInvalidaException) {
-        this._mensagem.texto = err.message;
-      } else {
-        // Mensagem genérica para qualquer problema que possa acontecer
-        this._mensagem.texto =
-          "Um erro inexperado aconteceu. Entre em contato com o suporte!";
-      }
+      this._limpaFormulario();
+    } catch (err) {
+      this._mensagem.texto = err.message;
     }
   }
 
-  // importaNegociacoes() {
-  //   // criação do array negociações
-  //   const negociacoes = [];
-
-  //   // retorna uma promise com as negociações da semana atual
-  //   this._service
-  //     .obterNegociacoesDaSemana()
-  //     // através do then, temos acesso aos dados de retorno de uma promise
-  //     .then(semana => {
-  //       // usando o spread operator,
-  //       // que desmembrará cada elemento do array anterior,
-  //       // passando-os como parâmetro para a função push()
-  //       negociacoes.push(...semana);
-  //       // retorna uma promise com as negociações da semana anterior
-  //       return this._service.obterNegociacoesDaSemanaAnterior();
-  //     })
-  //     .then(anterior => {
-  //       // adicionando também os dados da semana anterior juntos ao da semana atual (mesmo array)
-  //       negociacoes.push(...anterior);
-  //       return this._service.obterNegociacoesDaSemanaRetrasada();
-  //     })
-  //     .then(retrasada => {
-  //       negociacoes.push(...retrasada);
-  //       // para cada negociação no array, adicionamos a negociação na lista
-  //       negociacoes.forEach(negociacao =>
-  //         this._negociacoes.adiciona(negociacao)
-  //       );
-  //       // exibe mensagem de sucesso!
-  //       this._mensagem.texto = "Negociações importadas com sucesso!";
-  //     })
-  //     // caso não haja sucesso, exibe mensagem com o erro
-  //     .catch(err => (this._mensagem.texto = err));
-  // }
-
-  importaNegociacoes() {
-    this._service
-      .obterNegociacoesDoPeriodo()
-      .then(negociacoes => {
-        negociacoes
-          .filter(
-            novaNegociacao =>
-              !this._negociacoes
-                .paraArray()
-                .some(negociacaoExistente =>
-                  novaNegociacao.equals(negociacaoExistente)
-                )
-          )
+  async importaNegociacoes() {
+    try {
+      const negociacoes = await this._service.obterNegociacoesDoPeriodo();
+      console.log(negociacoes);
+      negociacoes.filter(novaNegociacao => 
+        !this._negociacoes.paraArray().some(negociacaoExistente =>
+          novaNegociacao.equals(negociacaoExistente)))
           .forEach(negociacao => this._negociacoes.adiciona(negociacao));
-        this._mensagem.texto = "Negociações do período importadas com sucesso!";
-      })
-      .catch(err => (this._mensagem.texto = err));
+      this._mensagem.texto = 'Negociações do período importadas com sucesso!';
+    } catch(err) {
+      this._mensagem.texto = err.message;
+    }
   }
 
   _limpaFormulario() {
@@ -153,14 +117,14 @@ export class NegociacaoController {
     );
   }
 
-  apaga() {
-    
-    getNegociacaoDAO()
-      .then(dao => dao.apagaTodos())
-      .then(() => {
-        this._negociacoes.esvazia();
-        this._mensagem.texto = "Negociações apagadas com sucesso!";
-      })
-      .catch(err => this._mensagem.texto = err);
+  async apaga() {
+    try {
+      const dao = await getNegociacaoDAO();
+      await dao.apagaTodos();
+      this._negociacoes.esvazia();
+      this._mensagem.texto = "Negociações apagadas com sucesso!";
+    } catch (err) {
+      this._mensagem.texto = err.message;
+    }
   }
 }
