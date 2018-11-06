@@ -3,10 +3,9 @@ import {
   NegociacoesView,
   MensagemView,
   Mensagem,
-  DataInvalidaException,
   DateConverter
 } from "../UI/index.js";
-import { getNegociacaoDAO, Bind } from "../util/index.js";
+import { getNegociacaoDAO, Bind, getExceptionMessage } from "../util/index.js";
 
 // exporta a classe NegociacaoController para quem precisar importar
 export class NegociacaoController {
@@ -60,7 +59,7 @@ export class NegociacaoController {
     } catch (err) {
       // err.message extrai apenas a mensagem de erro da exceção
 
-      this._mensagem.texto = err.message;
+      this._mensagem.texto = getExceptionMessage(err);
     }
     // getNegociacaoDAO()
     // .then(dao => dao.listaTodos())
@@ -84,7 +83,7 @@ export class NegociacaoController {
 
       this._limpaFormulario();
     } catch (err) {
-      this._mensagem.texto = err.message;
+      this._mensagem.texto = getExceptionMessage(err);
     }
   }
 
@@ -92,13 +91,19 @@ export class NegociacaoController {
     try {
       const negociacoes = await this._service.obterNegociacoesDoPeriodo();
       console.log(negociacoes);
-      negociacoes.filter(novaNegociacao => 
-        !this._negociacoes.paraArray().some(negociacaoExistente =>
-          novaNegociacao.equals(negociacaoExistente)))
-          .forEach(negociacao => this._negociacoes.adiciona(negociacao));
-      this._mensagem.texto = 'Negociações do período importadas com sucesso!';
-    } catch(err) {
-      this._mensagem.texto = err.message;
+      negociacoes
+        .filter(
+          novaNegociacao =>
+            !this._negociacoes
+              .paraArray()
+              .some(negociacaoExistente =>
+                novaNegociacao.equals(negociacaoExistente)
+              )
+        )
+        .forEach(negociacao => this._negociacoes.adiciona(negociacao));
+      this._mensagem.texto = "Negociações do período importadas com sucesso!";
+    } catch (err) {
+      this._mensagem.texto = getExceptionMessage(err);
     }
   }
 
@@ -124,7 +129,7 @@ export class NegociacaoController {
       this._negociacoes.esvazia();
       this._mensagem.texto = "Negociações apagadas com sucesso!";
     } catch (err) {
-      this._mensagem.texto = err.message;
+      this._mensagem.texto = getExceptionMessage(err);
     }
   }
 }

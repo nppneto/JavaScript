@@ -1,11 +1,24 @@
 export class ApplicationException extends Error {
+  constructor(msg = "") {
+    super(msg);
+    this.name = this.constructor.name;
+  }
+}
 
-    constructor(msg = '') {
+// Alteração \/
+const exception = ApplicationException;
 
-        super(msg);
-        this.name = this.constructor.name;
+export function isApplicationException(err) {
+  return (
+    err instanceof excepction || Object.getPrototypeOf(err) instanceof exception
+  );
+}
 
-    }
-
-
+export function getExceptionMessage(err) {
+  if (isApplicationException(err)) {
+    return err.message;
+  } else {
+    console.log(err);
+    return "Não foi possível realizar a operação.";
+  }
 }
