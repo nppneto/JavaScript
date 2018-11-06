@@ -61,7 +61,7 @@ export class NegociacaoService {
     );
   }
 
-  obterNegociacoesDoPeriodo() {
+  async obterNegociacoesDoPeriodo() {
     try {
       let periodo = await Promise.all([
         this.obterNegociacoesDaSemana(),
