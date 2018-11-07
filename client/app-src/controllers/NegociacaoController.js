@@ -5,17 +5,14 @@ import {
   Mensagem,
   DateConverter
 } from "../UI/index.js";
-import { getNegociacaoDAO, Bind, getExceptionMessage, debounce } from "../util/index.js";
+import { getNegociacaoDAO, Bind, getExceptionMessage, debounce, controller } from "../util/index.js";
 
+@controller('#data', '#quantidade', '#valor')
 // exporta a classe NegociacaoController para quem precisar importar
 export class NegociacaoController {
-  constructor() {
-    const $ = document.querySelector.bind(document);
+  constructor(_inputData, _inputQuantidade, _inputValor) {
 
-    this._inputQuantidade = $("#quantidade");
-    this._inputData = $("#data");
-    this._inputValor = $("#valor");
-
+    Object.assign(this, {_inputData, _inputQuantidade, _inputValor});
     // Através de Bind , passamos a instância do modelo, a instância
     // da View e as propriedades ou métodos que desejamos ativar a
     // atualização automática.
