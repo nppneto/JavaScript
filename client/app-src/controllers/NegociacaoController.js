@@ -5,7 +5,7 @@ import {
   Mensagem,
   DateConverter
 } from "../UI/index.js";
-import { getNegociacaoDAO, Bind, getExceptionMessage } from "../util/index.js";
+import { getNegociacaoDAO, Bind, getExceptionMessage, debounce } from "../util/index.js";
 
 // exporta a classe NegociacaoController para quem precisar importar
 export class NegociacaoController {
@@ -87,6 +87,7 @@ export class NegociacaoController {
     }
   }
 
+  @debounce(1500)
   async importaNegociacoes() {
     try {
       const negociacoes = await this._service.obterNegociacoesDoPeriodo();
