@@ -1,10 +1,24 @@
+import { obrigatorio } from "../../util";
+
 export class Negociacao {
-  constructor(_data, _quantidade, _valor) {
+  constructor(_data = obrigatorio('data'), 
+        _quantidade = obrigatorio('quantidade'), 
+        _valor = obrigatorio('valor')) {
+
+    // if(!_data) {
+    //   throw new Error('data é um parâmetro obrigatório');
+    // }
+
+    // if(!_quantidade) {
+    //   throw new Error('quantidade é um parâmetro obrigatório');
+    // }
+
+    // if(!_valor) {
+    //   throw new Error('valor é um parâmetro obrigatório');
+    // }
+
     Object.assign(this, { _quantidade, _valor });
     this._data = new Date(_data.getTime());
-    // this._data = new Date(data.getTime());
-    // this._quantidade = quantidade;
-    // this._valor = valor;
     Object.freeze(this);
   }
 
