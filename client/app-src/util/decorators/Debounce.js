@@ -12,7 +12,7 @@ export function debounce(milisegundos = 500) {
             clearTimeout(timer);
             // aqui entra a implementação do nosso método
             // que substituirá o original
-            time = setTimeout(() => metodoOriginal.apply(this, args), milisegundos);
+            timer = setTimeout(() => metodoOriginal.apply(this, args), milisegundos);
         }
         return descriptor;
     }
