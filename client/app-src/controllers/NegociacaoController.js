@@ -5,7 +5,7 @@ import {
   Mensagem,
   DateConverter
 } from "../UI/index.js";
-import { getNegociacaoDAO, Bind, getExceptionMessage, debounce, controller } from "../util/index.js";
+import { getNegociacaoDAO, Bind, getExceptionMessage, debounce, controller, bindEvent } from "../util/index.js";
 
 @controller('#data', '#quantidade', '#valor')
 // exporta a classe NegociacaoController para quem precisar importar
@@ -66,6 +66,8 @@ export class NegociacaoController {
     // .catch(err => this._mensagem.texto = err);
   }
 
+  @bindEvent('submit', '.form')
+  @debounce()
   async adiciona(event) {
     // Cancela a submissão do formulário
 
@@ -84,6 +86,7 @@ export class NegociacaoController {
     }
   }
 
+  @bindEvent('click', '#botao-importa')
   @debounce(1500)
   async importaNegociacoes() {
     try {
@@ -120,6 +123,7 @@ export class NegociacaoController {
     );
   }
 
+  @bindEvent('click', '#botao-apaga')
   async apaga() {
     try {
       const dao = await getNegociacaoDAO();
