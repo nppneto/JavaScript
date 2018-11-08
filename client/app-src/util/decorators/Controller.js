@@ -8,12 +8,31 @@ export function controller(...seletores) {
 
         const constructorNovo = function() {
 
-            return new constructorOriginal(...elements);
+            const instance = new constructorOriginal(...elements);
+
+            Object.getOwnPropertyNames(constructorOriginal.prototype)
+                .forEach(property => {
+
+                    if(Reflect.hasMetadata('bindEvent', instance, property)) {
+                        // fazer associação do evento com o método
+
+                        associaEvento(instance, Reflect.getMetadata('bindEvent', instance, property));
+                    }
+                });
         }
 
+        constructorNovo.prototype = constructorOriginal.prototype;
+
+        return constructorNovo;
     }
+}
 
-    constructorNovo.prototype = constructorOriginal.prototype;
+function associaEvento(instance, metadado) {
 
-    return constructorNovo;
+    document
+        .querySelector(metadado.selector)
+        .addEventListener(metadado.event, event => {
+            if(metadado.prevent) event.preventDefault();
+            instance[metadado.propertyKey](event);
+        });
 }
